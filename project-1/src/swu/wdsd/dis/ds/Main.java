@@ -61,10 +61,11 @@ public class Main {
             this.studentManager3=this.initStudentManager(studentManager.findByAverageScore(88,90));
             studentManager3.printAll();
             System.out.println("\n平均成绩从高到低\n");
-            this.studentManager3=this.initStudentManager(studentManager.sortByTotal());
-            studentManager3.printAll();
-
-
+            List<Student> students=studentManager.sortByTotal();
+            students.forEach(e ->
+            {
+                System.out.println(e);
+            });
         }
 
         public void findStudentById(String id) {
@@ -96,8 +97,6 @@ public class Main {
             List<Student> students = reader.read2();
             return students;
         }
-
-
 
 
         private StudentManager initStudentManager(List<Student> students) {

@@ -1,9 +1,11 @@
 package swu.wdsd.dis.ds.Student;
 
+import javax.xml.transform.Result;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.stream.Collectors;
 
 public class StudentManager {
     private Map<String, Student> students = new HashMap<>();
@@ -23,7 +25,7 @@ public class StudentManager {
         for (Iterator<String> it = ss.keySet().iterator(); it.hasNext(); ) {
             String key = it.next();
             Student student = ss.get(key);
-            System.out.println(String.format("学号：%s, 姓名：%s 语文：%d 数学：%d 英语：%d 总分：%d 平均：%f",student.getId(), student.getName(),student.getChinese_score(),student.getMath_score(),student.getEnglish_score(),student.getTotalPoints(),student.getAverage()));
+            System.out.println(String.format("学号：%s, 姓名：%s 语文：%d 数学：%d 英语：%d 总分：%d 平均：%f",student.getId(), student.getName(),student.getChineseScore(),student.getMathScore(),student.getEnglishScore(),student.getTotalPoints(),student.getAverage()));
         }
     }
 
@@ -36,15 +38,15 @@ public class StudentManager {
             Student student1=getStudentById(student.getId());
             if(i==0)
             {
-                student.setChinese_score(student1.getScore());
+                student.setChineseScore(student1.getScore());
             }
             if (i==1)
             {
-                student.setMath_score(student1.getScore());
+                student.setMathScore(student1.getScore());
             }
             if (i==2)
             {
-                student.setEnglish_score(student1.getScore());
+                student.setEnglishScore(student1.getScore());
             }
 
         }
@@ -65,10 +67,10 @@ public class StudentManager {
             String key = it.next();
             Student student = ss.get(key);
             if (classType == "chinese") {
-                if (student.getChinese_score() < min) {
+                if (student.getChineseScore() < min) {
                     continue;
                 }
-                if (student.getChinese_score() > max) {
+                if (student.getChineseScore() > max) {
                     continue;
                 } else {
                     students.add(student);
@@ -76,10 +78,10 @@ public class StudentManager {
                 }
             }
             if (classType == "math") {
-                if (student.getMath_score() < min) {
+                if (student.getMathScore() < min) {
                     continue;
                 }
-                if (student.getMath_score() > max) {
+                if (student.getMathScore() > max) {
                     continue;
                 } else {
                     students.add(student);
@@ -87,10 +89,10 @@ public class StudentManager {
                 }
             }
             if (classType == "english") {
-                if (student.getEnglish_score() < min) {
+                if (student.getEnglishScore() < min) {
                     continue;
                 }
-                if (student.getEnglish_score() > max) {
+                if (student.getEnglishScore() > max) {
                     continue;
                 } else {
                     students.add(student);
@@ -129,27 +131,23 @@ public class StudentManager {
 
     public List<Student> sortByTotal() //返回一个列表，列表中的学生按总分由高到低排序
     {
-        Map<String, Student> ss = getStudents();
-        List<Student> students = new ArrayList<>();
-        for (Iterator<String> it2 = ss.keySet().iterator(); it2.hasNext(); ) {
-            String key2 = it2.next();
-            Student student2 = ss.get(key2);
-            students.add(student2);
-        }
-        students = (List<Student>) students.stream().sorted(Comparator.comparing(Student::getAverage).reversed());
-        return students;
+        List<Student> Result=new ArrayList<>();
+        List<Student> finalResult = Result;
+        this.getStudents().entrySet().forEach(e->
+                {
+                    finalResult.add(e.getValue());
+                }
+        );
+        Result = Result.stream().sorted(Comparator.comparing(Student::getAverage).reversed()).collect(Collectors.toList());
+        return Result;
     }
-
-
-
-
 
     public void saveAs(String filePath) throws IOException {
         FileWriter writer = new FileWriter(filePath);
 
         for (Entry<String, Student> entry : this.getStudents().entrySet()) {
             Student student = entry.getValue();
-            writer.write(String.format("%s %s %d %d %d %d %f\n", student.getId(), student.getName(),student.getChinese_score(),student.getMath_score(),student.getEnglish_score(),student.getTotalPoints(),student.getAverage()));
+            writer.write(String.format("%s %s %d %d %d %d %f\n", student.getId(), student.getName(),student.getChineseScore(),student.getMathScore(),student.getEnglishScore(),student.getTotalPoints(),student.getAverage()));
         }
         writer.close();
     }
