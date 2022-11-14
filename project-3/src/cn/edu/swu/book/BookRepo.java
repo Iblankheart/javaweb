@@ -2,7 +2,7 @@ package cn.edu.swu.book;
 
 import cn.edu.swu.db.DBEngine;
 import cn.edu.swu.db.RecordVisitor;
-
+import cn.edu.swu.user.User;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
